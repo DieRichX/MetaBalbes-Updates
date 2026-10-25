@@ -1,0 +1,6 @@
+{
+  "version": "1.3.0",
+  "installer": "https://github.com/DieRichX/MetaBalbes-Updates/releases/download/v1.3.0/MetaBalbes-Setup.exe",
+  "checksum": "https://github.com/DieRichX/MetaBalbes-Updates/releases/download/v1.3.0/MetaBalbes-Setup.exe.sha256",
+  "notes": "Первая версия с профилями, резервными копиями, переносом данных и редактором готовых макросов."
+}
