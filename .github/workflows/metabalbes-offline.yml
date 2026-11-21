@@ -1,0 +1,31 @@
+name: Prepare MetaBalbes offline dependencies
+on:
+  push:
+    branches: [build/metabalbes-offline-deps]
+    paths: ['offline-deps/Cargo.toml', '.github/workflows/metabalbes-offline.yml']
+permissions:
+  contents: read
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Resolve and verify offline sources
+        working-directory: offline-deps
+        run: |
+          set -euo pipefail
+          mkdir -p src .cargo
+          touch src/main.rs build.rs
+          cargo generate-lockfile
+          cargo vendor --locked vendor > .cargo/config.toml
+          cargo metadata --offline --locked --format-version 1 > /dev/null
+          tar -czf ../metabalbes-dependencies.tar.gz Cargo.lock vendor .cargo/config.toml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: metabalbes-offline-dependencies
+          path: metabalbes-dependencies.tar.gz
+          compression-level: 0
+          retention-days: 3
